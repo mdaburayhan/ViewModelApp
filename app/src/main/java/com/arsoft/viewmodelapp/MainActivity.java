@@ -9,12 +9,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.arsoft.viewmodelapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-
-    int counter = 0;
+    MyViewModel viewModel;
     ActivityMainBinding mainBinding;
 
     @Override
@@ -24,14 +24,17 @@ public class MainActivity extends AppCompatActivity {
                 this, R.layout.activity_main
         );
 
+        viewModel = new ViewModelProvider(this)
+                .get(MyViewModel.class);
 
         mainBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                counter++;
-                mainBinding.textView2.setText(""+counter);
+                viewModel.increaseCounter();
+                mainBinding.textView2.setText(""+viewModel.getCounter());
             }
         });
+        mainBinding.textView2.setText(""+viewModel.getCounter());
 
 
 
