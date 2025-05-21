@@ -1,15 +1,25 @@
 package com.arsoft.viewmodelapp;
 
+import android.view.View;
+
+import androidx.databinding.Bindable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 public class MyViewModel extends ViewModel {
-    int counter = 0;
 
-    public void increaseCounter(){
-        counter++;
+    private MutableLiveData<Integer> counter = new MutableLiveData<>();
+
+    public void increaseCounter(View view){
+        // Retrieve the current value from LiveData
+        int currentValue = counter.getValue() != null ? counter.getValue() : 0 ;
+
+        // Increase the value by 1
+        counter.setValue(currentValue+1);
     }
 
-    public int getCounter() {
+    public LiveData<Integer> getCounter() {
         return counter;
     }
 }

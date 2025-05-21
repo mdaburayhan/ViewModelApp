@@ -9,6 +9,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.arsoft.viewmodelapp.databinding.ActivityMainBinding;
@@ -27,14 +28,30 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this)
                 .get(MyViewModel.class);
 
-        mainBinding.button.setOnClickListener(new View.OnClickListener() {
+       /*
+       // We can use this onClickListener. But for best practice we use the DataBinding
+
+       mainBinding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 viewModel.increaseCounter();
-                mainBinding.textView2.setText(""+viewModel.getCounter());
             }
-        });
-        mainBinding.textView2.setText(""+viewModel.getCounter());
+        });*/
+        // Link the DataBinding with ViewModel
+        mainBinding.setMyViewModel(viewModel);
+
+
+        // Observing the LiveData
+        viewModel.getCounter().observe(
+                this,
+                new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer counter) {
+                        // Update the UI when the LiveData Changes
+                        mainBinding.textView2.setText(""+counter);
+                    }
+                }
+        );
 
 
 
